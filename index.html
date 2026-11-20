@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101d35">
+<title>Skyapex Logistics | Shipment Tracking</title>
+<style>
+:root{--navy:#101d35;--navy2:#192b49;--orange:#f47721;--ink:#17243a;--muted:#718096;--bg:#f3f5f9;--line:#e5eaf1;--white:#fff;--green:#159b68;--red:#c24141}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.topbar{background:var(--navy);color:white;padding:18px max(20px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:12px}.brandmark{height:44px;width:44px;border-radius:12px;background:var(--orange);display:grid;place-items:center;font-size:23px}.brand strong{display:block;font-size:20px;letter-spacing:1.2px}.brand small{color:#ff9b59;letter-spacing:2px;font-weight:700}.nav{display:flex;gap:8px}.nav button{border:1px solid #526079;background:transparent;color:white;padding:9px 15px;border-radius:9px}.nav button.active,.nav button:hover{background:var(--orange);border-color:var(--orange)}.hero{background:linear-gradient(120deg,var(--navy),#20395e);color:white;padding:45px 20px 54px}.hero-inner{max-width:1120px;margin:auto}.eyebrow{color:#ff9b59;font-weight:800;letter-spacing:2px;font-size:12px}.hero h1{font-size:clamp(32px,5vw,52px);line-height:1.08;margin:10px 0}.hero p{color:#d5ddeb;max-width:600px;margin:0}.container{max-width:1120px;margin: -25px auto 50px;padding:0 18px;position:relative}.panel{background:white;border:1px solid var(--line);border-radius:17px;padding:24px;box-shadow:0 10px 30px #1324420b;margin-bottom:20px}.panel h2,.panel h3{margin:0 0 7px;color:var(--navy)}.sub{color:var(--muted);margin:0 0 18px}.track-form{display:flex;gap:10px;max-width:680px}.track-form input{flex:1;min-width:0}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}.field label{font-size:13px;font-weight:700;color:#39475d}.field input,.field select,.field textarea,.track-form input{width:100%;padding:12px 13px;border:1px solid #d9e0e9;border-radius:9px;background:white;color:var(--ink);outline:none}.field input:focus,.field select:focus,.field textarea:focus,.track-form input:focus{border-color:var(--orange);box-shadow:0 0 0 3px #f477211c}.btn{border:0;background:var(--orange);color:white;padding:12px 17px;border-radius:9px;font-weight:750}.btn:hover{filter:brightness(.96)}.btn.secondary{background:var(--navy);}.btn.ghost{background:#eef2f7;color:var(--navy)}.btn.danger{background:#fff0f0;color:var(--red)}.hidden{display:none!important}.notice{padding:11px 13px;border-radius:9px;background:#fff3e9;color:#8e4715;margin:12px 0;font-size:14px}.notice.success{background:#eaf8f1;color:#116b49}.notice.error{background:#fff0f0;color:#a42e2e}.result{margin-top:22px}.status-pill{display:inline-block;padding:5px 10px;border-radius:30px;background:#eaf2ff;color:#2256a0;font-size:12px;font-weight:800}.status-pill.delivered{background:#e8f7ef;color:#13764d}.status-pill.pending{background:#fff3e5;color:#99550c}.route{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}.routebox{background:#f5f7fa;border-radius:11px;padding:15px}.routebox small,.meta small{display:block;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:1px}.routebox strong{display:block;margin-top:5px}.meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.meta{background:#f8f9fb;border-radius:10px;padding:12px}.meta strong{display:block;margin-top:4px}.timeline{list-style:none;margin:20px 0 0;padding:0 0 0 8px}.timeline li{position:relative;padding:0 0 22px 30px;border-left:2px solid #dce3ec;margin-left:8px}.timeline li:last-child{border-left-color:transparent;padding-bottom:0}.dot{position:absolute;left:-9px;top:0;width:16px;height:16px;border-radius:50%;background:#cbd5e1;border:3px solid white;box-shadow:0 0 0 1px #cbd5e1}.timeline li.done .dot{background:var(--green);box-shadow:0 0 0 1px var(--green)}.timeline b{display:block}.timeline small{color:var(--muted)}.admin-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.stat{background:#f6f8fb;padding:16px;border-radius:12px}.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{font-size:25px;color:var(--navy)}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.full{grid-column:1/-1}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:720px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);font-size:13px}th{color:#66758a;background:#f8f9fb;font-size:11px;text-transform:uppercase;letter-spacing:.6px}td select{max-width:175px;padding:8px;border:1px solid var(--line);border-radius:7px;background:white}.actions{display:flex;gap:6px;flex-wrap:wrap}.actions button{padding:7px 9px;font-size:12px}.login{max-width:420px;margin:35px auto}.login-note{font-size:12px;color:var(--muted);background:#fff6ed;padding:12px;border-radius:9px}.footer{text-align:center;padding:24px;color:#7b8798;font-size:12px}.empty{padding:25px;text-align:center;color:var(--muted)}@media(max-width:700px){
+  .topbar{padding:14px 16px;gap:14px}
+  .hero{padding:32px 16px 46px}
+  .container{padding:0 12px}
+  .panel{padding:16px;border-radius:13px}
+  .track-form{flex-direction:column}
+  .track-form .btn{width:100%}
+  .route,.form-grid{grid-template-columns:1fr}
+  .meta-grid{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:1fr 1fr;gap:9px}
+  .stat{padding:12px}
+  .stat strong{font-size:22px}
+  .nav{width:100%}
+  .nav button{flex:1;padding:10px 8px}
+  .admin-head{align-items:stretch;flex-direction:column}
+  #adminSearch{max-width:none!important;width:100%}
+  .table-wrap{margin-left:-4px;margin-right:-4px;padding-bottom:5px}
+  table{min-width:680px}
+  .login{margin:18px auto}
+}
+@media(max-width:390px){
+  .brand strong{font-size:18px}
+  .brandmark{width:39px;height:39px}
+  .meta-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:32px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="brandmark">📦</div><div><strong>SKYAPEX</strong><small>LOGISTICS & DELIVERY</small></div></div>
+  <nav class="nav"><button id="trackTab" class="active" type="button">Track package</button><button id="adminTab" type="button">Admin portal</button></nav>
+</header>
+<section class="hero"><div class="hero-inner"><div class="eyebrow">WORLDWIDE SHIPPING • TRUSTED DELIVERY</div><h1>Delivering trust,<br><span style="color:#f47721">every mile.</span></h1><p>Reliable shipping, clear tracking and dependable delivery management for every package.</p></div></section>
+<main class="container">
+  <section id="customerView">
+    <div class="panel">
+      <h2>Track your shipment</h2><p class="sub">Enter your Skyapex tracking number to view shipment progress.</p>
+      <form class="track-form" id="trackingForm"><input id="trackingInput" placeholder="Enter tracking number (e.g. SKY100245)" autocomplete="off" required><button class="btn" type="submit">Track shipment →</button></form>
+      <div id="trackingResult" class="result"></div>
+    </div>
+    <div class="panel"><h3>Shipping with confidence</h3><p class="sub" style="margin-bottom:0">Use your unique tracking number to follow shipment milestones from registration to delivery. For assistance, contact your Skyapex shipping representative.</p></div>
+  </section>
+
+  <section id="adminView" class="hidden">
+    <div id="loginPanel" class="panel login">
+      <h2 style="text-align:center">Admin login</h2><p class="sub" style="text-align:center">Sign in to manage Skyapex shipments.</p>
+      <form id="loginForm">
+        <div class="field"><label for="username">Username</label><input id="username" value="admin" required></div>
+        <div class="field"><label for="password">Password</label><input id="password" type="password" value="skyapex123" required></div>
+        <button class="btn" style="width:100%" type="submit">Sign in to dashboard</button>
+      </form>
+      <div id="loginMessage"></div>
+      <p class="login-note"><b>Demo credentials</b><br>Username: admin<br>Password: skyapex123<br><br>Demo-only access. Replace this with secure server-side authentication before publishing.</p>
+    </div>
+    <div id="dashboard" class="hidden">
+      <div class="panel">
+        <div class="admin-head"><div><h2>Admin dashboard</h2><p class="sub" style="margin:0">Shipment management center</p></div><button id="logoutBtn" class="btn secondary" type="button">Log out</button></div>
+        <div class="stats">
+          <div class="stat"><span>Total shipments</span><strong id="totalStat">0</strong></div>
+          <div class="stat"><span>In transit</span><strong id="transitStat">0</strong></div>
+          <div class="stat"><span>Delivered</span><strong id="deliveredStat">0</strong></div>
+          <div class="stat"><span>Total listed charges</span><strong id="revenueStat">$0.00</strong></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Register a new shipment</h3><p class="sub">Complete the shipment details to generate a tracking number.</p>
+        <form id="shipmentForm">
+          <div class="form-grid">
+            <div class="field"><label for="sender">Sender's full name *</label><input id="sender" required></div>
+            <div class="field"><label for="receiver">Receiver's full name *</label><input id="receiver" required></div>
+            <div class="field"><label for="email">Receiver email</label><input id="email" type="email"></div>
+            <div class="field"><label for="phone">Receiver phone</label><input id="phone" type="tel"></div>
+            <div class="field"><label for="origin">Origin / sender address *</label><input id="origin" required></div>
+            <div class="field"><label for="destination">Destination / receiver address *</label><input id="destination" required></div>
+            <div class="field"><label for="description">Package description *</label><input id="description" required></div>
+            <div class="field"><label for="weight">Package weight</label><input id="weight" placeholder="e.g. 2.5 kg"></div>
+            <div class="field"><label for="price">Shipping price (USD)</label><input id="price" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="eta">Estimated delivery</label><input id="eta" type="date"></div>
+          </div>
+          <button class="btn" type="submit">＋ Create shipment & tracking ID</button>
+        </form>
+        <div id="createMessage"></div>
+      </div>
+      <div class="panel">
+        <div class="admin-head"><div><h3>Manage shipments</h3><p class="sub" style="margin:0">Update package status and location.</p></div><input id="adminSearch" style="max-width:260px;padding:10px;border:1px solid var(--line);border-radius:8px" placeholder="Search tracking ID or name"></div>
+        <div class="table-wrap" style="margin-top:16px"><table><thead><tr><th>Tracking ID</th><th>Sender / Receiver</th><th>Route</th><th>Status</th><th>Location</th><th>Price</th><th>Actions</th></tr></thead><tbody id="shipmentRows"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="footer">© <span id="year"></span> Skyapex Logistics · Demo website · Sample tracking data only</footer>
+<script>
+(() => {
+  "use strict";
+  const STORAGE_KEY = "skyapex_shipments_v1";
+  const STATUSES = ["Shipment Created","In Transit","Out for Delivery","Delivered"];
+  const $ = id => document.getElementById(id);
+  const today = () => new Date().toLocaleDateString("en-US",{month:"short",day:"2-digit",year:"numeric"});
+  const isoToday = () => new Date().toISOString().slice(0,10);
+  const seed = [
+    {id:"SKY100245",sender:"James Wilson",receiver:"Michael Brown",email:"michael@example.com",phone:"",origin:"New York, USA",destination:"London, UK",description:"Electronics package",weight:"4.5 kg",price:85,status:"In Transit",location:"Paris International Hub",created:"Nov 18, 2026",eta:"2026-11-23",events:[{status:"Shipment Created",location:"New York, USA",date:"Nov 18, 2026"},{status:"In Transit",location:"Paris International Hub",date:"Nov 20, 2026"}]},
+    {id:"SKY100246",sender:"Sarah Johnson",receiver:"David Smith",email:"david@example.com",phone:"",origin:"Chicago, USA",destination:"Toronto, Canada",description:"Documents",weight:"0.8 kg",price:35,status:"Delivered",location:"Toronto, Canada",created:"Nov 15, 2026",eta:"2026-11-19",events:[{status:"Shipment Created",location:"Chicago, USA",date:"Nov 15, 2026"},{status:"In Transit",location:"Toronto Distribution Center",date:"Nov 18, 2026"},{status:"Out for Delivery",location:"Toronto, Canada",date:"Nov 19, 2026"},{status:"Delivered",location:"Recipient Address",date:"Nov 19, 2026"}]}
+  ];
+  let shipments = loadShipments();
+  function loadShipments(){try{const v=localStorage.getItem(STORAGE_KEY);return v?JSON.parse(v):seed.slice()}catch(e){return seed.slice()}}
+  function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(shipments))}
+  function escapeHTML(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+  function money(v){return "$"+Number(v||0).toFixed(2)}
+  function statusClass(s){return s==="Delivered"?"delivered":s==="Shipment Created"?"pending":""}
+  function etaText(v){if(!v)return "To be confirmed";const d=new Date(v+"T12:00:00");return isNaN(d)?"To be confirmed":d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})}
+  function setView(which){const isAdmin=which==="admin";$("customerView").classList.toggle("hidden",isAdmin);$("adminView").classList.toggle("hidden",!isAdmin);$("trackTab").classList.toggle("active",!isAdmin);$("adminTab").classList.toggle("active",isAdmin)}
+  $("trackTab").addEventListener("click",()=>setView("track"));
+  $("adminTab").addEventListener("click",()=>setView("admin"));
+  $("year").textContent=new Date().getFullYear();
+
+  function renderTracking(id){
+    const item=shipments.find(s=>s.id.toLowerCase()===id.trim().toLowerCase());
+    const host=$("trackingResult");
+    if(!item){host.innerHTML='<div class="empty">📦<br><b>No matching shipment found.</b><br>Check the tracking number and try again.</div>';return}
+    const steps=STATUSES.map((s,index)=>{
+      const event=item.events.find(e=>e.status===s);
+      const done=!!event;
+      return `<li class="${done?"done":""}"><span class="dot"></span><b>${escapeHTML(s)}</b><small>${event?escapeHTML(event.location)+" · "+escapeHTML(event.date):"Awaiting update"}</small></li>`;
+    }).join("");
+    host.innerHTML=`
+      <div class="admin-head"><div><small style="color:var(--muted);font-weight:800;letter-spacing:1px">TRACKING NUMBER</small><h2 style="margin:2px 0">${escapeHTML(item.id)}</h2></div><span class="status-pill ${statusClass(item.status)}">${escapeHTML(item.status)}</span></div>
+      <div class="route"><div class="routebox"><small>FROM</small><strong>${escapeHTML(item.origin)}</strong></div><div class="routebox"><small>TO</small><strong>${escapeHTML(item.destination)}</strong></div></div>
+      <div class="meta-grid"><div class="meta"><small>SHIPMENT DATE</small><strong>${escapeHTML(item.created)}</strong></div><div class="meta"><small>ESTIMATED DELIVERY</small><strong>${escapeHTML(etaText(item.eta))}</strong></div><div class="meta"><small>PACKAGE WEIGHT</small><strong>${escapeHTML(item.weight||"Not specified")}</strong></div></div>
+      <div class="routebox"><small>CURRENT PACKAGE LOCATION</small><strong>${escapeHTML(item.location)}</strong><small style="margin-top:5px">Last recorded update · Demo information</small></div>
+      <h3 style="margin-top:22px">Shipment progress</h3><ul class="timeline">${steps}</ul>
+      <p style="color:var(--muted);font-size:13px;margin-top:20px">Recipient: ${escapeHTML(item.receiver)} · Package: ${escapeHTML(item.description)}</p>`;
+  }
+  $("trackingForm").addEventListener("submit",e=>{e.preventDefault();renderTracking($("trackingInput").value)});
+  $("trackingInput").value="SKY100245";
+  renderTracking("SKY100245");
+
+  $("loginForm").addEventListener("submit",e=>{
+    e.preventDefault();
+    if($("username").value==="admin" && $("password").value==="skyapex123"){
+      $("loginPanel").classList.add("hidden");$("dashboard").classList.remove("hidden");$("loginMessage").innerHTML="";renderAdmin();
+    }else{$("loginMessage").innerHTML='<div class="notice error">Incorrect demo username or password.</div>'}
+  });
+  $("logoutBtn").addEventListener("click",()=>{$("dashboard").classList.add("hidden");$("loginPanel").classList.remove("hidden")});
+
+  $("shipmentForm").addEventListener("submit",e=>{
+    e.preventDefault();
+    const count=shipments.reduce((max,s)=>Math.max(max,Number(s.id.replace(/\D/g,""))||100000),100246)+1;
+    const id="SKY"+count;
+    const origin=$("origin").value.trim();
+    const item={id,sender:$("sender").value.trim(),receiver:$("receiver").value.trim(),email:$("email").value.trim(),phone:$("phone").value.trim(),origin,destination:$("destination").value.trim(),description:$("description").value.trim(),weight:$("weight").value.trim()||"Not specified",price:Number($("price").value||0),status:"Shipment Created",location:origin,created:today(),eta:$("eta").value,events:[{status:"Shipment Created",location:origin,date:today()}]};
+    shipments.unshift(item);save();e.target.reset();
+    $("createMessage").innerHTML=`<div class="notice success">Shipment created successfully. Tracking number: <b>${escapeHTML(id)}</b>. The customer can now track this package.</div>`;
+    renderAdmin();
+  });
+
+  function renderAdmin(){
+    $("totalStat").textContent=shipments.length;
+    $("transitStat").textContent=shipments.filter(s=>s.status==="In Transit").length;
+    $("deliveredStat").textContent=shipments.filter(s=>s.status==="Delivered").length;
+    $("revenueStat").textContent=money(shipments.reduce((a,s)=>a+Number(s.price||0),0));
+    const q=$("adminSearch").value.trim().toLowerCase();
+    const rows=shipments.filter(s=>[s.id,s.sender,s.receiver].some(v=>String(v).toLowerCase().includes(q)));
+    $("shipmentRows").innerHTML=rows.length?rows.map(s=>`<tr>
+      <td><b>${escapeHTML(s.id)}</b></td><td>${escapeHTML(s.sender)}<br><small>${escapeHTML(s.receiver)}</small></td>
+      <td>${escapeHTML(s.origin)}<br>→ ${escapeHTML(s.destination)}</td>
+      <td><select aria-label="Status for ${escapeHTML(s.id)}" data-status="${escapeHTML(s.id)}">${STATUSES.map(st=>`<option ${st===s.status?"selected":""}>${escapeHTML(st)}</option>`).join("")}</select></td>
+      <td><input aria-label="Location for ${escapeHTML(s.id)}" data-location="${escapeHTML(s.id)}" value="${escapeHTML(s.location)}" style="width:145px;padding:7px;border:1px solid var(--line);border-radius:6px"></td>
+      <td>${money(s.price)}</td><td><div class="actions"><button class="btn secondary" data-save="${escapeHTML(s.id)}" type="button">Save</button><button class="btn ghost" data-track="${escapeHTML(s.id)}" type="button">Track</button></div></td>
+    </tr>`).join(""):'<tr><td colspan="7" class="empty">No shipments match your search.</td></tr>';
+    $("shipmentRows").querySelectorAll("[data-save]").forEach(btn=>btn.addEventListener("click",()=>{
+      const id=btn.dataset.save;const item=shipments.find(s=>s.id===id);if(!item)return;
+      const newStatus=$("shipmentRows").querySelector(`[data-status="${CSS.escape(id)}"]`).value;
+      const newLocation=$("shipmentRows").querySelector(`[data-location="${CSS.escape(id)}"]`).value.trim()||item.location;
+      item.status=newStatus;item.location=newLocation;
+      const selectedIndex=STATUSES.indexOf(newStatus);
+      // Keep only milestones up to the selected status when moving a shipment backwards.
+      item.events=item.events.filter(e=>STATUSES.indexOf(e.status)<=selectedIndex);
+      const existing=item.events.find(e=>e.status===newStatus);
+      if(existing){existing.location=newLocation;existing.date=today()}
+      else item.events.push({status:newStatus,location:newLocation,date:today()});
+      item.events.sort((a,b)=>STATUSES.indexOf(a.status)-STATUSES.indexOf(b.status));
+      save();renderAdmin();
+    }));
+    $("shipmentRows").querySelectorAll("[data-track]").forEach(btn=>btn.addEventListener("click",()=>{
+      $("trackingInput").value=btn.dataset.track;renderTracking(btn.dataset.track);setView("track");
+    }));
+  }
+  $("adminSearch").addEventListener("input",renderAdmin);
+})();
+</script>
+</body>
+</html>
