@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<div class="language-selector">
+  <strong>Select your language:</strong>
+  <div id="google_translate_element"></div>
+</div>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#101d35">
@@ -96,7 +100,31 @@ html{scroll-behavior:smooth}
 .support-form .field textarea{min-height:130px;resize:vertical}
 .support-form-status{margin-top:12px}
 @media(max-width:520px){.support-link-grid{grid-template-columns:1fr}}
+</style>
+<style>
+  #google_translate_element {
+    display: inline-block;
+    margin: 12px 0;
+    padding: 8px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+  }
 
+  .goog-te-gadget {
+    font-size: 14px !important;
+    color: #222 !important;
+  }
+
+  .goog-te-gadget select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: white;
+    color: #222;
+    font-size: 14px;
+    max-width: 100%;
+  }
 </style>
 </head>
 <body>
@@ -530,6 +558,22 @@ html{scroll-behavior:smooth}
   // Restore an existing visitor conversation on page reload when the anonymous session still matches.
   (async()=>{try{const {data:{session}}=await sb.auth.getSession();if(session && session.user.is_anonymous && visitorConversationId && session.user.id===visitorAuthId){$("visitorChatStart").classList.add("hidden");$("visitorChatActive").classList.remove("hidden");await loadVisitorMessages();}}catch(_){}})();
 })();
+</script>
+<script>
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages:
+        'af,sq,am,ar,hy,az,eu,be,bn,bs,bg,ca,ceb,ny,zh-CN,zh-TW,co,hr,cs,da,nl,en,eo,et,tl,fi,fr,fy,gl,ka,de,el,gu,ht,he,hi,hu,is,id,ga,it,ja,jv,kn,kk,km,ko,lo,la,lv,lt,mk,mg,ms,ml,mt,mi,mr,mn,my,ne,no,ps,fa,pl,pt,pa,ro,ru,sm,gd,sr,st,sn,sd,si,sk,sl,so,es,su,sw,sv,tg,ta,te,th,tr,uk,ur,uz,vi,cy,xh,zu',
+      includedOnly: true,
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+</script>
+
+<script
+  src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
 </script>
 </body>
 </html>
