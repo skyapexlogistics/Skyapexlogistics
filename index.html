@@ -316,7 +316,6 @@ html{scroll-behavior:smooth}
 <script>
 (() => {
   "use strict";
-  const STORAGE_KEY = "skyapex_shipments_v1";
   const SUPABASE_URL = "https://goxzrzvzwlbhgtuxdbkl.supabase.co";
   const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_As3ckPUDqlxSEIUSoQ54yg_-Ozq5DDF";
   const ADMIN_EMAIL = "info.skyflex.cs@gmail.com";
@@ -328,79 +327,47 @@ html{scroll-behavior:smooth}
   let chatPoller = null;
   const STATUSES = ["Shipment Created","Processing","Picked Up","In Transit","Customs Clearance","On Hold","Delayed","Out for Delivery","Delivered"];
   const $ = id => document.getElementById(id);
-
-  // EDIT THESE 10 entries to set the button names and destination URLs.
-  // Until a real destination is entered, the button explains that its link is not configured.
   const SUPPORT_LINKS = [
     {label:"Telegram", url:"https://t.me/BofficialD"},
-    {label:"Whatsapp", url:"jb081449892@gmail.com"},
+    {label:"Whatsapp", url:"mailto:jb081449892@gmail.com"},
     {label:"Zangi", url:"https://services.zangi.com/dl/conversation/7743219511"},
-    {label:"Email", url:"info.skyflex.cs@gmail.com"},
+    {label:"Email", url:"mailto:info.skyflex.cs@gmail.com"},
     {label:"Signal", url:"https://signal.me/#eu/SokSBcb5SK7poMx0Zc9VGHk2mTqTnlORKLePsA-3julUqNzrmAlMepiGeF88CuN8"},
-    {label:"Imessage", url:"jb081449892@gmail.com"},
+    {label:"Imessage", url:"mailto:jb081449892@gmail.com"}
   ];
   const supportLinkGrid = $("supportLinkGrid");
-  if (supportLinkGrid) {
-    supportLinkGrid.querySelectorAll("[data-support-link]").forEach(link => {
-      const item = SUPPORT_LINKS[Number(link.dataset.supportLink)];
-      if (!item) return;
-      link.textContent = item.label;
-      if (item.url) {
-        link.href = item.url;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-      } else {
-        link.addEventListener("click", event => {
-          event.preventDefault();
-          alert("This support link has not been configured yet.");
-        });
-      }
-    });
-  }
-
+  if (supportLinkGrid) supportLinkGrid.querySelectorAll("[data-support-link]").forEach(link => {
+    const item = SUPPORT_LINKS[Number(link.dataset.supportLink)];
+    if (!item) return;
+    link.textContent = item.label; link.href = item.url; link.target = "_blank"; link.rel = "noopener noreferrer";
+  });
   const customerSupportForm = $("customerSupportForm");
-  if (customerSupportForm) {
-    customerSupportForm.addEventListener("submit", async event => {
-      event.preventDefault();
-      const status = $("supportFormStatus");
-      const submit = $("supportSubmitBtn");
-      status.className = "support-form-status";
-      status.textContent = "Sending your message…";
-      submit.disabled = true;
-      try {
-        const response = await fetch(customerSupportForm.action, {
-          method: "POST",
-          body: new FormData(customerSupportForm),
-          headers: { "Accept": "application/json" }
-        });
-        if (!response.ok) {
-          let detail = "";
-          try {
-            const result = await response.json();
-            detail = result.errors?.map(error => error.message).join(" ") || "";
-          } catch (_) {}
-          throw new Error(detail || "Your message could not be sent. Please try again.");
-        }
-        customerSupportForm.reset();
-        status.className = "notice success support-form-status";
-        status.textContent = "Thank you. Your message has been sent successfully.";
-      } catch (error) {
-        status.className = "notice error support-form-status";
-        status.textContent = error.message || "Unable to send your message. Please try again.";
-      } finally {
-        submit.disabled = false;
-      }
-    });
+  if (customerSupportForm) customerSupportForm.addEventListener("submit", async event => {
+    event.preventDefault(); const status=$("supportFormStatus"), submit=$("supportSubmitBtn");
+    status.className="support-form-status"; status.textContent="Sending your message…"; submit.disabled=true;
+    try {
+      const response=await fetch(customerSupportForm.action,{method:"POST",body:new FormData(customerSupportForm),headers:{"Accept":"application/json"}});
+      if(!response.ok) throw new Error("Your message could not be sent. Please try again.");
+      customerSupportForm.reset(); status.className="notice success support-form-status"; status.textContent="Thank you. Your message has been sent successfully.";
+    } catch(error) { status.className="notice error support-form-status"; status.textContent=error.message||"Unable to send your message. Please try again."; }
+    finally { submit.disabled=false; }
+  });
+  const today=()=>new Date().toLocaleDateString("en-US",{month:"short",day:"2-digit",year:"numeric"});
+  let shipments=[];
+  async function loadShipments(){
+    const {data,error}=await sb.from("shipment_records").select("tracking_id,data");
+    if(error) throw error;
+    shipments=(data||[]).map(row=>({...row.data,id:row.tracking_id,note:row.data.note||"",visible:row.data.visible!==false,events:Array.isArray(row.data.events)?row.data.events:[]}));
   }
-  const today = () => new Date().toLocaleDateString("en-US",{month:"short",day:"2-digit",year:"numeric"});
-  const isoToday = () => new Date().toISOString().slice(0,10);
-  const seed = [
-    {id:"SKY100245",sender:"James Wilson",receiver:"Michael Brown",email:"michael@example.com",phone:"",origin:"New York, USA",destination:"London, UK",description:"Electronics package",weight:"4.5 kg",price:85,status:"In Transit",location:"Paris International Hub",created:"Nov 18, 2026",eta:"2026-11-23",events:[{status:"Shipment Created",location:"New York, USA",date:"Nov 18, 2026"},{status:"In Transit",location:"Paris International Hub",date:"Nov 20, 2026"}]},
-    {id:"SKY100246",sender:"Sarah Johnson",receiver:"David Smith",email:"david@example.com",phone:"",origin:"Chicago, USA",destination:"Toronto, Canada",description:"Documents",weight:"0.8 kg",price:35,status:"Delivered",location:"Toronto, Canada",created:"Nov 15, 2026",eta:"2026-11-19",events:[{status:"Shipment Created",location:"Chicago, USA",date:"Nov 15, 2026"},{status:"In Transit",location:"Toronto Distribution Center",date:"Nov 18, 2026"},{status:"Out for Delivery",location:"Toronto, Canada",date:"Nov 19, 2026"},{status:"Delivered",location:"Recipient Address",date:"Nov 19, 2026"}]}
-  ];
-  let shipments = loadShipments();
-  function loadShipments(){try{const v=localStorage.getItem(STORAGE_KEY);const list=v?JSON.parse(v):seed.slice();return list.map(s=>({...s,note:s.note||"",visible:s.visible!==false,events:Array.isArray(s.events)?s.events:[]}))}catch(e){return seed.slice()}}
-  function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(shipments))}
+  async function save(item){
+    const payload={...item}; delete payload.id;
+    const {error}=await sb.from("shipment_records").upsert({tracking_id:item.id,data:payload},{onConflict:"tracking_id"});
+    if(error) throw error;
+  }
+  async function deleteSaved(id){
+    const {error}=await sb.from("shipment_records").delete().eq("tracking_id",id);
+    if(error) throw error;
+  }
   function escapeHTML(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
   function money(v){return "$"+Number(v||0).toFixed(2)}
   function statusClass(s){return s==="Delivered"?"delivered":s==="Shipment Created"?"pending":""}
@@ -410,24 +377,24 @@ html{scroll-behavior:smooth}
   $("adminTab").addEventListener("click",()=>setView("admin"));
   $("year").textContent=new Date().getFullYear();
 
-  function renderTracking(id){
-    const item=shipments.find(s=>s.id.toLowerCase()===id.trim().toLowerCase() && s.visible!==false);
-    const host=$("trackingResult");
-    if(!item){host.innerHTML='<div class="empty">📦<br><b>No matching shipment found.</b><br>Check the tracking number and try again, or contact Skyapex support.</div>';return}
-    const events=(item.events||[]).slice().reverse().map(event=>`
-      <li class="done"><span class="dot"></span><b>${escapeHTML(event.status)}</b><small>${escapeHTML(event.location||"Location not provided")} · ${escapeHTML(event.date||"Date not provided")}</small></li>`).join("");
-    host.innerHTML=`
-      <div class="admin-head"><div><small style="color:var(--muted);font-weight:800;letter-spacing:1px">TRACKING NUMBER</small><h2 style="margin:2px 0">${escapeHTML(item.id)}</h2></div><span class="status-pill ${statusClass(item.status)}">${escapeHTML(item.status)}</span></div>
+  async function renderTracking(id){
+    const host=$("trackingResult"); const trackingId=String(id||"").trim();
+    if(!trackingId){host.innerHTML="";return;}
+    host.innerHTML='<div class="empty">Looking up your shipment…</div>';
+    const {data,error}=await sb.rpc("public_track_shipment",{tracking_number:trackingId});
+    if(error || !data){host.innerHTML='<div class="empty">📦<br><b>No matching shipment found.</b><br>Check the tracking number and try again, or contact Skyapex support.</div>';return;}
+    const item=data;
+    const events=(item.events||[]).slice().reverse().map(event=>`<li class="done"><span class="dot"></span><b>${escapeHTML(event.status)}</b><small>${escapeHTML(event.location||"Location not provided")} · ${escapeHTML(event.date||"Date not provided")}</small></li>`).join("");
+    host.innerHTML=`<div class="admin-head"><div><small style="color:var(--muted);font-weight:800;letter-spacing:1px">SHIPMENT STATUS</small><h2 style="margin:2px 0">${escapeHTML(item.status)}</h2></div><span class="status-pill ${statusClass(item.status)}">${escapeHTML(item.status)}</span></div>
       <div class="route"><div class="routebox"><small>FROM</small><strong>${escapeHTML(item.origin)}</strong></div><div class="routebox"><small>TO</small><strong>${escapeHTML(item.destination)}</strong></div></div>
-      <div class="meta-grid"><div class="meta"><small>SHIPMENT DATE</small><strong>${escapeHTML(item.created)}</strong></div><div class="meta"><small>ESTIMATED DELIVERY</small><strong>${escapeHTML(etaText(item.eta))}</strong></div><div class="meta"><small>PACKAGE WEIGHT</small><strong>${escapeHTML(item.weight||"Not specified")}</strong></div></div>
-      <div class="routebox"><small>CURRENT PACKAGE LOCATION</small><strong>${escapeHTML(item.location)}</strong></div>
+      <div class="meta-grid"><div class="meta"><small>SHIPMENT DATE</small><strong>${escapeHTML(item.created||"Not specified")}</strong></div><div class="meta"><small>ESTIMATED DELIVERY</small><strong>${escapeHTML(etaText(item.eta))}</strong></div><div class="meta"><small>PACKAGE WEIGHT</small><strong>${escapeHTML(item.weight||"Not specified")}</strong></div></div>
+      <div class="routebox"><small>CURRENT PACKAGE LOCATION</small><strong>${escapeHTML(item.location||"Not provided")}</strong></div>
       ${item.note?`<div class="notice" style="margin-top:14px"><b>Message from Skyapex:</b><br>${escapeHTML(item.note)}</div>`:""}
       <h3 style="margin-top:22px">Shipment progress</h3><ul class="timeline">${events||'<li><b>Tracking history not yet available</b></li>'}</ul>
-      <p style="color:var(--muted);font-size:13px;margin-top:20px">Recipient: ${escapeHTML(item.receiver)} · Package: ${escapeHTML(item.description)}</p>`;
+      <p style="color:var(--muted);font-size:13px;margin-top:20px">Recipient: ${escapeHTML(item.receiver||"")} · Package: ${escapeHTML(item.description||"")}</p>`;
   }
   $("trackingForm").addEventListener("submit",e=>{e.preventDefault();renderTracking($("trackingInput").value)});
-  $("trackingInput").value="SKY100245";
-  renderTracking("SKY100245");
+  // Public tracking inputs are never prefilled or saved in browser storage.
 
   $("loginForm").addEventListener("submit",async e=>{
     e.preventDefault();
@@ -437,6 +404,7 @@ html{scroll-behavior:smooth}
     const {data,error}=await sb.auth.signInWithPassword({email,password});
     if(error){$("loginMessage").innerHTML='<div class="notice error">Sign-in failed. Check your email and password.</div>';return}
     currentAdmin=data.user;
+    try { await loadShipments(); } catch(err) { $("loginMessage").innerHTML='<div class="notice error">Could not load shipments. Run the included Supabase SQL setup and verify admin access.</div>'; await sb.auth.signOut(); currentAdmin=null; return; }
     $("loginPanel").classList.add("hidden");$("dashboard").classList.remove("hidden");$("loginMessage").innerHTML="";$("password").value="";
     renderAdmin();loadSupportInbox();startAdminChatPolling();
   });
@@ -445,13 +413,13 @@ html{scroll-behavior:smooth}
     $("dashboard").classList.add("hidden");$("loginPanel").classList.remove("hidden");
   });
 
-  $("shipmentForm").addEventListener("submit",e=>{
+  $("shipmentForm").addEventListener("submit",async e=>{
     e.preventDefault();
-    const count=shipments.reduce((max,s)=>Math.max(max,Number(s.id.replace(/\D/g,""))||100000),100246)+1;
+    const count=shipments.reduce((max,s)=>Math.max(max,Number(s.id.replace(/\D/g,""))||100000),100000)+1;
     const id="SKY"+count;
     const origin=$("origin").value.trim();
     const item={id,sender:$("sender").value.trim(),receiver:$("receiver").value.trim(),email:$("email").value.trim(),phone:$("phone").value.trim(),origin,destination:$("destination").value.trim(),description:$("description").value.trim(),weight:$("weight").value.trim()||"Not specified",price:Number($("price").value||0),status:"Shipment Created",location:origin,created:today(),eta:$("eta").value,events:[{status:"Shipment Created",location:origin,date:today()}]};
-    shipments.unshift(item);save();e.target.reset();
+    try { await save(item); shipments.unshift(item); e.target.reset(); } catch(err) { $("createMessage").innerHTML='<div class="notice error">Could not save shipment. Check database setup and try again.</div>'; return; }
     $("createMessage").innerHTML=`<div class="notice success">Shipment created successfully. Tracking number: <b>${escapeHTML(id)}</b>. The customer can now track this package.</div>`;
     renderAdmin();
   });
@@ -470,7 +438,7 @@ html{scroll-behavior:smooth}
       <td><input aria-label="Location for ${escapeHTML(s.id)}" data-location="${escapeHTML(s.id)}" value="${escapeHTML(s.location)}" style="width:145px;padding:7px;border:1px solid var(--line);border-radius:6px"></td>
       <td>${money(s.price)}</td><td><div class="actions"><button class="btn secondary" data-save="${escapeHTML(s.id)}" type="button">Save</button><button class="btn ghost" data-edit="${escapeHTML(s.id)}" type="button">Edit all</button><button class="btn ghost" data-track="${escapeHTML(s.id)}" type="button">Preview</button></div></td>
     </tr>`).join(""):'<tr><td colspan="7" class="empty">No shipments match your search.</td></tr>';
-    $("shipmentRows").querySelectorAll("[data-save]").forEach(btn=>btn.addEventListener("click",()=>{
+    $("shipmentRows").querySelectorAll("[data-save]").forEach(btn=>btn.addEventListener("click",async()=>{
       const id=btn.dataset.save;const item=shipments.find(s=>s.id===id);if(!item)return;
       const newStatus=$("shipmentRows").querySelector(`[data-status="${CSS.escape(id)}"]`).value;
       const newLocation=$("shipmentRows").querySelector(`[data-location="${CSS.escape(id)}"]`).value.trim()||item.location;
@@ -478,7 +446,7 @@ html{scroll-behavior:smooth}
       const existing=item.events.find(e=>e.status===newStatus);
       if(existing){existing.location=newLocation;existing.date=today()}
       else item.events.push({status:newStatus,location:newLocation,date:today()});
-      save();renderAdmin();
+      try { await save(item); renderAdmin(); } catch(err) { alert("Unable to save this shipment update. Check your connection and database permissions."); }
     }));
     $("shipmentRows").querySelectorAll("[data-edit]").forEach(btn=>btn.addEventListener("click",()=>openEditor(btn.dataset.edit)));
     $("shipmentRows").querySelectorAll("[data-track]").forEach(btn=>btn.addEventListener("click",()=>{
@@ -503,7 +471,7 @@ html{scroll-behavior:smooth}
     $("editPanel").scrollIntoView({behavior:"smooth",block:"start"});
   }
   $("closeEdit").addEventListener("click",()=>$("editPanel").classList.add("hidden"));
-  $("editForm").addEventListener("submit",e=>{
+  $("editForm").addEventListener("submit",async e=>{
     e.preventDefault();
     const s=shipments.find(x=>x.id===$("editId").value);if(!s)return;
     const parsed=$("editEvents").value.split(/\\r?\\n/).map(line=>line.trim()).filter(Boolean).map(line=>{
@@ -519,13 +487,14 @@ html{scroll-behavior:smooth}
       eta:$("editEta").value,status:$("editStatus").value,location:$("editLocation").value.trim(),
       note:$("editNote").value.trim(),visible:$("editVisible").checked,events:parsed
     });
-    save();renderAdmin();renderTracking(s.id);
+    try { await save(s); renderAdmin(); renderTracking(s.id); } catch(err) { $("editMessage").innerHTML='<div class="notice error">Could not save changes. Check your connection and database permissions.</div>'; return; }
     $("editMessage").innerHTML='<div class="notice success">Saved. The customer tracking page now shows your updated information.</div>';
   });
-  $("deleteShipment").addEventListener("click",()=>{
+  $("deleteShipment").addEventListener("click",async()=>{
     const id=$("editId").value;
     if(!confirm("Delete shipment "+id+"? Customers will no longer be able to track it."))return;
-    shipments=shipments.filter(s=>s.id!==id);save();$("editPanel").classList.add("hidden");renderAdmin();$("trackingResult").innerHTML="";
+    try { await deleteSaved(id); } catch(err) { $("editMessage").innerHTML='<div class="notice error">Could not delete shipment. Check database permissions.</div>'; return; }
+    shipments=shipments.filter(s=>s.id!==id);$("editPanel").classList.add("hidden");renderAdmin();$("trackingResult").innerHTML="";
   });
   $("adminSearch").addEventListener("input",renderAdmin);
 
